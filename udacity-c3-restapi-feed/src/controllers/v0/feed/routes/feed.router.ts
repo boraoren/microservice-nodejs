@@ -9,16 +9,16 @@ const router: Router = Router();
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
  //   return next();
-     if (!req.headers || !req.headers.authorization){
+     if (!req.headers || !req.headers.authorization) {
          return res.status(401).send({ message: 'No authorization headers.' });
      }
-     
- 
+
+
      const token_bearer = req.headers.authorization.split(' ');
-     if(token_bearer.length != 2){
+     if (token_bearer.length !== 2) {
          return res.status(401).send({ message: 'Malformed token.' });
      }
-     
+
      const token = token_bearer[1];
      return jwt.verify(token, c.config.jwt.secret , (err, decoded) => {
        if (err) {
@@ -32,7 +32,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 router.get('/', async (req: Request, res: Response) => {
     const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
     items.rows.map((item) => {
-            if(item.url) {
+            if (item.url) {
                 item.url = AWS.getGetSignedUrl(item.url);
             }
     });
@@ -40,36 +40,36 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // Get a specific resource
-router.get('/:id', 
+router.get('/:id',
     async (req: Request, res: Response) => {
-    let { id } = req.params;
+    const { id } = req.params;
     const item = await FeedItem.findByPk(id);
     res.send(item);
 });
 
 // update a specific resource
-router.patch('/:id', 
-    requireAuth, 
+router.patch('/:id',
+    requireAuth,
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
+        // @TODO try it yourself
+        res.send(500).send('not implemented');
 });
 
 
 // Get a signed url to put a new item in the bucket
-router.get('/signed-url/:fileName', 
-    requireAuth, 
+router.get('/signed-url/:fileName',
+    requireAuth,
     async (req: Request, res: Response) => {
-    let { fileName } = req.params;
+    const { fileName } = req.params;
     const url = AWS.getPutSignedUrl(fileName);
     res.status(201).send({url: url});
 });
 
-// Post meta data and the filename after a file is uploaded 
+// Post meta data and the filename after a file is uploaded
 // NOTE the file name is they key name in the s3 bucket.
 // body : {caption: string, fileName: string};
-router.post('/', 
-    requireAuth, 
+router.post('/',
+    requireAuth,
     async (req: Request, res: Response) => {
     const caption = req.body.caption;
     const fileName = req.body.url;
