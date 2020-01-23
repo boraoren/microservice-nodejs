@@ -1,17 +1,15 @@
-import { Router, Request, Response } from 'express';
+import {Request, Response, Router} from 'express';
 
-import { User } from '../models/User';
-import { AuthRouter, requireAuth } from './auth.router';
+import {User} from '../models/User';
 
 const router: Router = Router();
 
-router.use('/auth', AuthRouter);
-
 router.get('/', async (req: Request, res: Response) => {
+    res.send('This is auth root endpoint');
 });
 
 router.get('/:id', async (req: Request, res: Response) => {
-    let { id } = req.params;
+    const { id } = req.params;
     const item = await User.findByPk(id);
     res.send(item);
 });
