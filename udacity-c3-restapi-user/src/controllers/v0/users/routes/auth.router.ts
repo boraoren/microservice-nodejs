@@ -1,18 +1,15 @@
-import { Router, Request, Response } from 'express';
+import {Request, Response, Router} from 'express';
 
-import { User } from '../models/User';
+import {User} from '../models/User';
 import * as c from '../../../../config/config';
 
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { NextFunction } from 'connect';
+import {NextFunction} from 'connect';
 
 import * as EmailValidator from 'email-validator';
-import { config } from 'bluebird';
 
 const router: Router = Router();
-
-router.use('/auth', router);
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
     const saltRounds = 10;
