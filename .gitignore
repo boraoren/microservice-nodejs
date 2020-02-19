@@ -180,4 +180,12 @@ dist
 .DS_Store
 .idea
 *.iml
-aws
+/aws/*
+
+# Terraform
+.terraform/
+terraform.tfstate*
+terraform.tfvars
+tf.json
+udagram-kubeconfig
+udagram.tar.gz

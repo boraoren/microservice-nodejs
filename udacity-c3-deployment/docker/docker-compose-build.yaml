@@ -15,4 +15,4 @@ services:
   frontend:
     build:
       context: ../../udacity-c3-frontend  
-    image: borasmus/udacity-c3-frontend:local
+    image: borasmus/udacity-c3-frontend:v2

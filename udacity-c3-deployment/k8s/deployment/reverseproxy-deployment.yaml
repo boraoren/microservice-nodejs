@@ -1,29 +1,32 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: frontend
-  name: frontend
+    service: reverseproxy
+  name: reverseproxy
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      service: reverseproxy
   template:
     metadata:
       labels:
-        service: frontend
-        api: external        
+        service: reverseproxy
     spec:
       containers:
-      - image: scheele/udacity-frontend:local
-        name: frontend
+      - image: borasmus/reverseproxy
+        name: reverseproxy
         imagePullPolicy: Always          
-        ports:
-        - containerPort: 80
         resources:
           requests:
             memory: "64Mi"
             cpu: "250m"
           limits:
             memory: "1024Mi"
-            cpu: "500m"                
+            cpu: "500m"       
+        ports:
+        - containerPort: 8080
       restartPolicy: Always
+
 

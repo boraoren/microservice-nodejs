@@ -1,5 +1,15 @@
 version: "3"
 services:
+  postgresql:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: POSTGRESS_USER
+      POSTGRES_PASSWORD: POSTGRESS_PASSWORD
+    ports:
+      - 5432:5432
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
   reverseproxy:
       image: borasmus/reverseproxy
       ports:
@@ -11,14 +21,22 @@ services:
   backend-user:
     image: borasmus/udacity-c3-restapi-user
     env_file:
-      - $HOME/.profile.env
+      - $HOME/.profile
+    depends_on:
+      - postgresql
   backend-feed:
     image: borasmus/udacity-c3-restapi-feed
     volumes:
       - $HOME/.aws:/root/.aws
     env_file:
-      - $HOME/.profile.env
+      - $HOME/.profile
+    depends_on:
+      - postgresql
   frontend:
     image: borasmus/udacity-c3-frontend:local
     ports:
       - "8100:80"
+volumes:
+  postgresql-data:
+    driver: local
+
