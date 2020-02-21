@@ -119,13 +119,19 @@ Kubernetes Cluster on AWS.
             1. variables.tf line 33
             `default` to your SSH public key file path
         1. run `terraform plan` command to confirm
-        1. run `terraform apply` command to execute for AWS and enter `yes` 
-        after running the command.
+            1. enter a value: udagram
+        1. run `terraform apply` command to execute for AWS
+            1. enter a value: udagram 
+            1. enter `yes` after running the command.
         1. run `terraform output -json > tf.json` to create state 
         that will be used by kubeone
     1. kubernetes
         1. go to `terraform/aws` directory
+        1. run in terminal `export AWS_ACCESS_KEY_ID=${YOUR_AWS_ACCESS_KEY_ID}"`
+        1. run in terminal `export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"`
         1. run `kubeone install config.yml --tfjson tf.json` command
+            1. if `Error: failed to install prerequisites: at least one of the tasks has encountered an error`
+            occurs, 
         1. set environment for kubeone `KUBECONFIG=$PWD/udagram-kubeconfig`
 
 1. Postgresql Database
