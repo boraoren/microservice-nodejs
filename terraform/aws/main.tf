@@ -149,14 +149,14 @@ resource "aws_iam_instance_profile" "profile" {
   role = aws_iam_role.role.name
 }
 
-data "aws_iam_policy" "CloudWatchAgentServerPolicy" {
-  arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+resource "aws_iam_role_policy_attachment" "attach"{
+  role = aws_iam_role.role.id
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
 resource "aws_iam_role_policy" "policy" {
   name = "${var.cluster_name}-host"
   role = aws_iam_role.role.id
-  policy_arn = data.aws_iam_policy.CloudWatchAgentServerPolicy
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -174,7 +174,6 @@ resource "aws_iam_role_policy" "policy" {
   ]
 }
 EOF
-
 }
 
 resource "aws_lb" "control_plane" {
